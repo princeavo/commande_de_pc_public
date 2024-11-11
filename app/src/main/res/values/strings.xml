@@ -52,6 +52,7 @@
     <string name="logiciel_type_label">Composant logiciel</string>
     <string name="commande">Passer une commande</string>
     <string name="etat_commande">Etat des commandes</string>
+    <string name="choice_title">"Choisissez votre "</string>
 
 
 </resources>

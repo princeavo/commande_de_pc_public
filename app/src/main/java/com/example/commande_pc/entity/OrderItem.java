@@ -14,4 +14,8 @@ public class OrderItem {
     public long getItemId(){
         return this.item_id;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
 }

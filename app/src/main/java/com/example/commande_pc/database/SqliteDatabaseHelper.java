@@ -91,7 +91,6 @@ public class SqliteDatabaseHelper extends SQLiteOpenHelper {
                 ")";
         db.execSQL(createMyOrderItemsTable);
 
-
         this.insertRoleToDatabase(db, "administrator");
         this.insertRoleToDatabase(db, "requester");
         this.insertRoleToDatabase(db, "storekeeper");

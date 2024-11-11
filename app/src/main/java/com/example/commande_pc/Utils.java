@@ -86,4 +86,7 @@ public class Utils {
     public static void showMessageDialog(Context context,String message,String title){
         new AlertDialog.Builder(context).setMessage(message).setTitle(title).setIcon(R.drawable.web_link).setNegativeButton("Ok",null).show();
     }
+    public static String[] getItemsSubTypes(){
+        return new String[]{"boitier", "carte mère", "barrette mémoire", "disque dur", "écran", "clavier-souris", "navigateur Web", "suite bureautique", "outils de développement"};
+    }
 }

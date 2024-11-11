@@ -14,25 +14,8 @@ import com.example.commande_pc.R;
 import com.example.commande_pc.databinding.ChoosingItems2Binding;
 import com.example.commande_pc.databinding.ChoosingItems9Binding;
 
-public class Choosing9Fragment extends Fragment {
-    private ChoosingItems9Binding binding;
-    private Button begin9;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        binding = ChoosingItems9Binding.inflate(inflater,container,false);
-        begin9 = binding.button9;
-        begin9.setEnabled(true);
-        begin9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment next= new Choosing10Fragment();
-                FragmentTransaction exchange= getFragmentManager().beginTransaction();
-                exchange.replace(R.id.fragment_container,next);
-                exchange.addToBackStack(null);
-                exchange.commit();
-            }
-        });
-        return binding.getRoot();
+public class Choosing9Fragment extends OrderChoiceFragment {
+    public int getPosition() {
+        return 7;
     }
 }

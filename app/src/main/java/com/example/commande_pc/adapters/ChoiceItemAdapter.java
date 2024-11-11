@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -68,16 +69,22 @@ public class ChoiceItemAdapter extends RecyclerView.Adapter<ChoiceItemAdapter.Vi
 //                }).setPositiveButton("Non",null).show();
 //            }
 //        });
-        holder.quantityEditText.addTextChangedListener(new TextWatcher() {
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void afterTextChanged(Editable s) {
-                fragment.addToList(items.get(holder.getAdapterPosition()).getId(), Integer.parseInt(s.toString()));
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int quantity = 0;
+                try{
+                    quantity = Integer.parseInt(holder.quantityEditText.getText().toString());
+                    if(quantity <0) quantity = 0;
+                }catch (NumberFormatException | NullPointerException ignored){}
+                if(isChecked){
+                    fragment.addToList(items.get(holder.getAdapterPosition()).getId(), quantity );
+                }else{
+                    fragment.deleteFromList(items.get(holder.getAdapterPosition()).getId(), quantity);
+                }
             }
         });
+        
 //        holder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
