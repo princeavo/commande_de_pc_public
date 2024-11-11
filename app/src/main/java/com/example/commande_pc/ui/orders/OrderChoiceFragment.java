@@ -38,6 +38,8 @@ public abstract class OrderChoiceFragment extends Fragment {
         Bundle bundle = getArguments();
 
         items = (ArrayList<Item>) bundle.getSerializable("items");
+        if(items == null)
+            items = new ArrayList<>();
 
         recyclerView.setAdapter(new ChoiceItemAdapter(this,items));
     }

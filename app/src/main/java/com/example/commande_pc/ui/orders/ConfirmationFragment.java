@@ -20,7 +20,6 @@ public class ConfirmationFragment extends Fragment {
         binding = OrderConfirmationFragmentBinding.inflate(inflater,container,false);
         orderConfirmBtn = binding.confirmButton;
         orderConfirmBtn.setOnClickListener(v -> {
-            PlaceOrderFragment.newOrder();
         });
         return binding.getRoot();
     }

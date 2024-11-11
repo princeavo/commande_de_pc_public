@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.commande_pc.MainActivity;
 import com.example.commande_pc.R;
 import com.example.commande_pc.Utils;
+import com.example.commande_pc.database.SqliteDatabaseHelper;
 import com.example.commande_pc.databinding.ChoosingItems1Binding;
 import com.example.commande_pc.databinding.ChoosingItems2Binding;
 import com.example.commande_pc.databinding.ChoosingItems4Binding;
@@ -90,6 +91,10 @@ public class PlaceOrderFragment extends Fragment {
             if(constraint != null){
                 Utils.showMessageDialog(getContext(),getConstraintMessage(constraint),"Erreur");
                 return;
+            }else{
+                ((Requester) (MainActivity.getUser())).newOrder(orderItems);
+                resetOrdersList();
+                Utils.showMessageDialog(getContext(),"Commande passée avec succès","Succès");
             }
             step = 0;
             previous.setEnabled(true);
@@ -171,16 +176,10 @@ public class PlaceOrderFragment extends Fragment {
     public static void removeFromOrderItems(long item_id, int quantity,int position){
         orderItems.get(position).removeIf(o -> o.getItemId() == item_id);
     }
-    public static void newOrder(){
-
-    }
     public static OrderItemConstraint checkConstraints(){
         for(int i=0; i<orderItems.size(); i++){
-            int quantity = getQuantity(orderItems.get(i));
-            OrderItemConstraint  constraint = orderItemsConstraints.get(i);
-            if(isValid(orderItems.get(i),constraint)){
-                continue;
-            }else{
+            OrderItemConstraint constraint = orderItemsConstraints.get(i);
+            if(!isValid(orderItems.get(i),constraint)){
                 constraint.setErrorPosition(i);
                 return constraint;
             }
@@ -189,6 +188,7 @@ public class PlaceOrderFragment extends Fragment {
     }
     private static boolean isValid(ArrayList<OrderItem> items,OrderItemConstraint  constraint){
         int quantity = getQuantity(items);
+        System.out.println(quantity);
         if(constraint.isRange()){
             return quantity >= constraint.getMin() && quantity <= constraint.getMax();
         }else{

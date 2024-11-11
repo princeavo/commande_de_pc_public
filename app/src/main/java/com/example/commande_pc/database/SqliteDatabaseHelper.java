@@ -14,6 +14,8 @@ import com.example.commande_pc.entity.Administrator;
 import com.example.commande_pc.entity.Assembler;
 import com.example.commande_pc.entity.Item;
 import com.example.commande_pc.entity.MaterielItem;
+import com.example.commande_pc.entity.Order;
+import com.example.commande_pc.entity.OrderItem;
 import com.example.commande_pc.entity.Requester;
 import com.example.commande_pc.entity.Role;
 import com.example.commande_pc.entity.SofwareItem;
@@ -484,5 +486,47 @@ public class SqliteDatabaseHelper extends SQLiteOpenHelper {
 
             }
         }catch(Exception e){}
+    }
+    public void addNewOrder(long requesterId,ArrayList<ArrayList<OrderItem>> orderItems){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("requester_id", requesterId);
+        long order_id = db.insert(DATABASE_ORDERS_TABLE, null, values);
+
+        for(ArrayList<OrderItem> list: orderItems){
+            for(OrderItem item: list){
+                ContentValues values1 = new ContentValues();
+                values1.put("order_id", order_id);
+                values1.put("item_id", item.getItemId());
+                values1.put("quantity", item.getQuantity());
+                db.insert(DATABASE_MY_ORDERS_ITEMS_TABLE, null, values1);
+            }
+        }
+    }
+    public ArrayList<Order> getOrders(long requester_id){
+        ArrayList<Order> orders = new ArrayList();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DATABASE_ORDERS_TABLE + " where requester_id = ?", new String[]{String.valueOf(requester_id)});
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            orders.add(new Order(
+                            cursor.getLong(Math.max(0, cursor.getColumnIndex("id"))),
+                            cursor.getLong(Math.max(0, cursor.getColumnIndex("requester_id"))),
+                            Utils.stringToDate(cursor.getString(Math.max(0, cursor.getColumnIndex("created_at"))))
+                    )
+            );
+            cursor.moveToNext();
+        }
+        db.close();
+        return orders;
+    }
+
+    public int deleteOrder(long orderId) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            return db.delete(DATABASE_ORDERS_TABLE, "id = ?", new String[]{String.valueOf(orderId)}) + db.delete(DATABASE_MY_ORDERS_ITEMS_TABLE, "order_id = ?", new String[]{String.valueOf(orderId)});
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }

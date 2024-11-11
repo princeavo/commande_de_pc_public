@@ -107,4 +107,5 @@
         android:id="@+id/fragment_2"
         android:name="com.example.commande_pc.ui.orders.Choosing2Fragment"
         tools:layout="@layout/choosing_items_2"/>
+    <fragment android:id="@+id/nav_requester_etat_commande" android:name="com.example.commande_pc.ui.orders.OrderStateFragment" android:label="@string/etat_commande" tools:layout="@layout/see_order_status"/>
 </navigation>

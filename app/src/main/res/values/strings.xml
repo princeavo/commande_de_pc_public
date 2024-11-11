@@ -53,6 +53,7 @@
     <string name="commande">Passer une commande</string>
     <string name="etat_commande">Etat des commandes</string>
     <string name="choice_title">"Choisissez votre "</string>
+    <string name="mes_commandes">Mes commandes</string>
 
 
 </resources>

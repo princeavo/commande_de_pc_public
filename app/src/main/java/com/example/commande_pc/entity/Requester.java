@@ -1,5 +1,6 @@
 package com.example.commande_pc.entity;
 
+import com.example.commande_pc.MainActivity;
 import com.example.commande_pc.database.SqliteDatabaseHelper;
 
 import java.util.ArrayList;
@@ -32,5 +33,22 @@ public class Requester extends User{
         ArrayList<Item> items = dbHelper.getItems();
         dbHelper.close();
         return items;
+    }
+    public void newOrder(ArrayList<ArrayList<OrderItem>> orderItems){
+        SqliteDatabaseHelper dbHelper = new SqliteDatabaseHelper();
+        dbHelper.addNewOrder(MainActivity.getUser().getId(),orderItems);
+        dbHelper.close();
+    }
+    public ArrayList<Order> getOrders(){
+        SqliteDatabaseHelper dbHelper = new SqliteDatabaseHelper();
+        ArrayList<Order> orders = dbHelper.getOrders(this.id);
+        dbHelper.close();
+        return orders;
+    }
+    public boolean deleteOrder(Order order) {
+        SqliteDatabaseHelper dbHelper = new SqliteDatabaseHelper();
+        int returnValue = dbHelper.deleteOrder(order.getId());
+        dbHelper.close();
+        return returnValue != 0;
     }
 }
