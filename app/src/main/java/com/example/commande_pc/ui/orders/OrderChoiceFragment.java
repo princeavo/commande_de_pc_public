@@ -16,6 +16,7 @@ import com.example.commande_pc.Utils;
 import com.example.commande_pc.adapters.ChoiceItemAdapter;
 import com.example.commande_pc.databinding.ChoosingItems2Binding;
 import com.example.commande_pc.entity.Item;
+import com.example.commande_pc.entity.OrderItem;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public abstract class OrderChoiceFragment extends Fragment {
     RecyclerView recyclerView;
     TextView choosing;
     private ChoosingItems2Binding binding;
-    private ArrayList<Item> items;
+
     public OrderChoiceFragment(){
         super();
     }
@@ -33,15 +34,21 @@ public abstract class OrderChoiceFragment extends Fragment {
     public void deleteFromList(long item_id,int quantity){
         PlaceOrderFragment.removeFromOrderItems(item_id,quantity,getPosition());
     }
+    public void updateQuantityOfOrderItemOfList(long item_id,int quantity){
+        PlaceOrderFragment.setQuantity(item_id,quantity,getPosition());
+    }
     protected void applyAdapterToRecycleView(){
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
         Bundle bundle = getArguments();
 
-        items = (ArrayList<Item>) bundle.getSerializable("items");
+        ArrayList<Item> items = (ArrayList<Item>) bundle.getSerializable("items");
         if(items == null)
             items = new ArrayList<>();
+        ArrayList<OrderItem> state = (ArrayList<OrderItem>) bundle.getSerializable("state");
+        if(state == null)
+            state = new ArrayList<>();
 
-        recyclerView.setAdapter(new ChoiceItemAdapter(this,items));
+        recyclerView.setAdapter(new ChoiceItemAdapter(this, items,state));
     }
     abstract int getPosition();
 

@@ -27,6 +27,7 @@ import com.example.commande_pc.entity.Requester;
 import com.example.commande_pc.entity.StoreKeeper;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PlaceOrderFragment extends Fragment {
@@ -82,6 +83,7 @@ public class PlaceOrderFragment extends Fragment {
         if(step != 9){
             ArrayList<Item> filteredItems = (ArrayList<Item>) items.stream().filter(item -> item.getSubtype().equalsIgnoreCase(ordersSubTypes[step])).collect(Collectors.toList());
             args.putSerializable("items",filteredItems);
+            args.putSerializable("state",orderItems.get(step));
         }
 
 
@@ -121,6 +123,7 @@ public class PlaceOrderFragment extends Fragment {
         ArrayList<Item> filteredItems = (ArrayList<Item>) items.stream().filter(item -> item.getSubtype().equalsIgnoreCase(ordersSubTypes[step])).collect(Collectors.toList());
         Bundle args = new Bundle();
         args.putSerializable("items",filteredItems);
+        args.putSerializable("state",orderItems.get(step));
         Fragment next= getFragmentByStep(step);
 
         if(next != null){
@@ -175,6 +178,10 @@ public class PlaceOrderFragment extends Fragment {
     }
     public static void removeFromOrderItems(long item_id, int quantity,int position){
         orderItems.get(position).removeIf(o -> o.getItemId() == item_id);
+    }
+    public static void setQuantity(long item_id, int quantity,int position){
+        Optional<OrderItem> optional = orderItems.get(position).stream().filter(o -> o.getItemId() == item_id).findFirst();
+        optional.ifPresent(orderItem -> orderItem.setQuantity(quantity));
     }
     public static OrderItemConstraint checkConstraints(){
         for(int i=0; i<orderItems.size(); i++){

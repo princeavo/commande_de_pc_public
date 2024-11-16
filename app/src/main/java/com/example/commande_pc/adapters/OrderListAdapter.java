@@ -61,8 +61,6 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
                 }).setPositiveButton("Non",null).show();
             }
         });
-
-
     }
 
     @Override
